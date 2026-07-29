@@ -30,6 +30,7 @@ export function GoogleSignInButton() {
         text="continue_with"
         size="large"
         width={360}
+        logo_alignment="center"
       />
     </div>
   );
