@@ -1,10 +1,18 @@
 import { useAuthStore } from "@/stores/auth-store";
 import type { ApiProblemDetails, AuthResultDto } from "@/types/api";
 
-// Strip any trailing slash(es) so a stray trailing "/" in the env var never
-// produces a double slash when concatenated with a "/"-prefixed path below
-// (ASP.NET Core routing 404s on the empty path segment that creates).
-const API_BASE_URL = (process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:5180").replace(/\/+$/, "");
+// Normalize the configured base URL so common env-var typos can't break every
+// request built from it: prepend "https://" if the scheme was left off
+// entirely (otherwise fetch() resolves it as a path relative to this app's
+// own origin instead of the backend), and strip trailing slash(es) so they
+// never produce a double slash when concatenated with a "/"-prefixed path
+// below (ASP.NET Core routing 404s on the resulting empty path segment).
+function normalizeBaseUrl(url: string): string {
+  const withScheme = /^https?:\/\//i.test(url) ? url : `https://${url}`;
+  return withScheme.replace(/\/+$/, "");
+}
+
+const API_BASE_URL = normalizeBaseUrl(process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:5180");
 
 export class ApiError extends Error {
   status: number;
