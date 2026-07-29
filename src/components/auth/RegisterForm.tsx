@@ -47,7 +47,7 @@ export function RegisterForm() {
   };
 
   return (
-    <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+    <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
       <Controller
         control={control}
         name="name"

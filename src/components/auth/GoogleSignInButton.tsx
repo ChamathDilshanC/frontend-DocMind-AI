@@ -50,7 +50,7 @@ export function GoogleSignInButton() {
         shape="rectangular"
         text="continue_with"
         size="large"
-        width={360}
+        width={400}
         logo_alignment="center"
       />
     </div>

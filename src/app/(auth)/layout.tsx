@@ -7,7 +7,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
       <BrandPanel />
       <div className="flex flex-1 flex-col bg-[#f7f8fc] px-6 py-12">
         <div className="flex flex-1 flex-col items-center justify-center">
-          <div className="w-full max-w-sm animate-in fade-in slide-in-from-bottom-4 rounded-3xl border border-black/5 bg-white p-8 shadow-[0_2px_8px_-4px_rgba(15,23,42,0.08),0_24px_48px_-24px_rgba(39,67,255,0.25)] duration-500 sm:p-10">
+          <div className="w-full max-w-lg animate-in fade-in slide-in-from-bottom-4 rounded-3xl border border-black/5 bg-white p-12 shadow-[0_2px_8px_-4px_rgba(15,23,42,0.08),0_24px_48px_-24px_rgba(39,67,255,0.25)] duration-500 sm:p-14">
             {children}
           </div>
         </div>
