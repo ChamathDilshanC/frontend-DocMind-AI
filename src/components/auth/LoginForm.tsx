@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Checkbox, FieldError, InputGroup, Label, Link, TextField } from "@heroui/react";
+import { Button, Checkbox, InputGroup, Label, Link, TextField } from "@heroui/react";
 import { Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import { gooeyToast as toast } from "goey-toast";
@@ -56,7 +56,7 @@ export function LoginForm() {
               </InputGroup.Prefix>
               <InputGroup.Input placeholder="you@example.com" type="email" />
             </InputGroup>
-            <FieldError>{fieldState.error?.message}</FieldError>
+            {fieldState.error && <p className="text-xs text-danger px-1">{fieldState.error.message}</p>}
           </TextField>
         )}
       />
@@ -90,7 +90,7 @@ export function LoginForm() {
                 </Button>
               </InputGroup.Suffix>
             </InputGroup>
-            <FieldError>{fieldState.error?.message}</FieldError>
+            {fieldState.error && <p className="text-xs text-danger px-1">{fieldState.error.message}</p>}
           </TextField>
         )}
       />

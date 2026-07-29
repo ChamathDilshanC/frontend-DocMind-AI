@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, FieldError, InputGroup, Label, TextField } from "@heroui/react";
+import { Button, InputGroup, Label, TextField } from "@heroui/react";
 import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
@@ -66,7 +66,7 @@ export function RegisterForm() {
               </InputGroup.Prefix>
               <InputGroup.Input />
             </InputGroup>
-            <FieldError>{fieldState.error?.message}</FieldError>
+            {fieldState.error && <p className="text-xs text-danger px-1">{fieldState.error.message}</p>}
           </TextField>
         )}
       />
@@ -89,7 +89,7 @@ export function RegisterForm() {
               </InputGroup.Prefix>
               <InputGroup.Input placeholder="you@example.com" type="email" />
             </InputGroup>
-            <FieldError>{fieldState.error?.message}</FieldError>
+            {fieldState.error && <p className="text-xs text-danger px-1">{fieldState.error.message}</p>}
           </TextField>
         )}
       />
@@ -123,7 +123,7 @@ export function RegisterForm() {
                 </Button>
               </InputGroup.Suffix>
             </InputGroup>
-            <FieldError>{fieldState.error?.message}</FieldError>
+            {fieldState.error && <p className="text-xs text-danger px-1">{fieldState.error.message}</p>}
           </TextField>
         )}
       />
