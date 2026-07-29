@@ -14,8 +14,25 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "DocMind AI",
+  metadataBase: new URL("https://frontend-doc-mind-ai.vercel.app"),
+  title: {
+    default: "DocMind AI",
+    template: "%s · DocMind AI",
+  },
   description: "AI-powered document assistant with RAG-based chat over your own PDF and DOCX files.",
+  applicationName: "DocMind AI",
+  openGraph: {
+    title: "DocMind AI",
+    description: "AI-powered document assistant with RAG-based chat over your own PDF and DOCX files.",
+    images: ["/logo-full.png"],
+    siteName: "DocMind AI",
+  },
+  twitter: {
+    card: "summary",
+    title: "DocMind AI",
+    description: "AI-powered document assistant with RAG-based chat over your own PDF and DOCX files.",
+    images: ["/logo-full.png"],
+  },
 };
 
 export default function RootLayout({

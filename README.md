@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="public/logo-full.png" alt="DocMind AI" width="360" />
+</p>
+
 # DocMind AI — Frontend
 
 Next.js (App Router) client for DocMind AI, an AI-powered RAG document assistant. Pairs with [backend-DocMind AI](https://github.com/ChamathDilshanC/backend-DocMind-AI).

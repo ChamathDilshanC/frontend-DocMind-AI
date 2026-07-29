@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FileText, LayoutDashboard, MessageSquare, Settings } from "lucide-react";
@@ -18,7 +19,8 @@ export function AppSidebar() {
   return (
     <aside className="hidden w-60 shrink-0 border-r bg-muted/20 md:flex md:flex-col">
       <div className="flex h-14 items-center border-b px-4">
-        <Link href="/dashboard" className="font-semibold">
+        <Link href="/dashboard" className="flex items-center gap-2 font-semibold">
+          <Image src="/logo.png" alt="" width={24} height={24} />
           DocMind AI
         </Link>
       </div>
