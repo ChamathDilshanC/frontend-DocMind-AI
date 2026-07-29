@@ -8,6 +8,7 @@ import { ChatInput } from "@/components/chat/ChatInput";
 import { MessageBubble, type DisplayMessage } from "@/components/chat/MessageBubble";
 import { TypingIndicator } from "@/components/chat/TypingIndicator";
 import { ChatMessagesSkeleton } from "@/components/ui/loading-skeletons";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { useConversation } from "@/hooks/useChat";
 import { chatApi } from "@/lib/api/chat";
 import { getHubConnection } from "@/lib/signalr/connection";
@@ -95,26 +96,28 @@ export function ChatWindow({ conversationId }: { conversationId: string }) {
         </header>
       )}
 
-      <div className="flex-1 space-y-6 overflow-y-auto p-6">
-        {isLoading ? (
-          <ChatMessagesSkeleton />
-        ) : messages.length === 0 ? (
-          <div className="flex h-full flex-col items-center justify-center text-center">
-            <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-100 text-brand-700">
-              <Sparkles className="h-5 w-5" />
-            </span>
-            <p className="mt-4 font-medium">Ask about your documents</p>
-            <p className="mt-1 max-w-sm text-sm text-muted-foreground">
-              Type a question below, or use <span className="font-medium text-foreground">@</span> to tag a specific
-              document first.
-            </p>
-          </div>
-        ) : (
-          messages.map((message) => <MessageBubble key={message.id} message={message} />)
-        )}
-        {showTypingIndicator && <TypingIndicator />}
-        <div ref={scrollRef} />
-      </div>
+      <ScrollArea className="flex-1">
+        <div className="min-h-full space-y-6 p-6">
+          {isLoading ? (
+            <ChatMessagesSkeleton />
+          ) : messages.length === 0 ? (
+            <div className="flex h-full flex-col items-center justify-center text-center">
+              <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-100 text-brand-700">
+                <Sparkles className="h-5 w-5" />
+              </span>
+              <p className="mt-4 font-medium">Ask about your documents</p>
+              <p className="mt-1 max-w-sm text-sm text-muted-foreground">
+                Type a question below, or use <span className="font-medium text-foreground">@</span> to tag a
+                specific document first.
+              </p>
+            </div>
+          ) : (
+            messages.map((message) => <MessageBubble key={message.id} message={message} />)
+          )}
+          {showTypingIndicator && <TypingIndicator />}
+          <div ref={scrollRef} />
+        </div>
+      </ScrollArea>
       <ChatInput onSend={handleSend} disabled={isAsking} />
     </div>
   );

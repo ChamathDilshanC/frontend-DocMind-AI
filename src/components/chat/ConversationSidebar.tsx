@@ -7,7 +7,6 @@ import { Skeleton } from "@heroui/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { gooeyToast } from "goey-toast";
 import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { useChatHistory, useCreateConversation, useDeleteConversation } from "@/hooks/useChat";
 import { cn } from "@/lib/utils";
 
@@ -42,7 +41,7 @@ export function ConversationSidebar() {
         </Button>
       </div>
 
-      <ScrollArea className="flex-1">
+      <div className="flex-1 overflow-hidden">
         <div className="space-y-1 p-2">
           {isLoading &&
             Array.from({ length: 5 }).map((_, i) => (
@@ -110,7 +109,7 @@ export function ConversationSidebar() {
               })}
           </AnimatePresence>
         </div>
-      </ScrollArea>
+      </div>
     </div>
   );
 }
