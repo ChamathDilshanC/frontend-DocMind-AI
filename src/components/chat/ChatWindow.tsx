@@ -3,8 +3,10 @@
 import { useEffect, useRef, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { gooeyToast as toast } from "goey-toast";
+import { Sparkles } from "lucide-react";
 import { ChatInput } from "@/components/chat/ChatInput";
 import { MessageBubble, type DisplayMessage } from "@/components/chat/MessageBubble";
+import { ChatMessagesSkeleton } from "@/components/ui/loading-skeletons";
 import { useConversation } from "@/hooks/useChat";
 import { chatApi } from "@/lib/api/chat";
 import { getHubConnection } from "@/lib/signalr/connection";
@@ -84,11 +86,26 @@ export function ChatWindow({ conversationId }: { conversationId: string }) {
 
   return (
     <div className="flex flex-1 flex-col overflow-hidden">
-      <div className="flex-1 space-y-4 overflow-y-auto p-4">
+      {conversation && (
+        <header className="border-b bg-card px-6 py-4">
+          <h1 className="truncate font-semibold">{conversation.title}</h1>
+        </header>
+      )}
+
+      <div className="flex-1 space-y-6 overflow-y-auto p-6">
         {isLoading ? (
-          <p className="text-sm text-muted-foreground">Loading conversation...</p>
+          <ChatMessagesSkeleton />
         ) : messages.length === 0 ? (
-          <p className="text-sm text-muted-foreground">Ask a question about your uploaded documents to get started.</p>
+          <div className="flex h-full flex-col items-center justify-center text-center">
+            <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-100 text-brand-700">
+              <Sparkles className="h-5 w-5" />
+            </span>
+            <p className="mt-4 font-medium">Ask about your documents</p>
+            <p className="mt-1 max-w-sm text-sm text-muted-foreground">
+              Type a question below, or use <span className="font-medium text-foreground">@</span> to tag a specific
+              document first.
+            </p>
+          </div>
         ) : (
           messages.map((message) => <MessageBubble key={message.id} message={message} />)
         )}

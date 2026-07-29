@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DocumentPagesViewer } from "@/components/documents/DocumentPagesViewer";
 import { DocumentStatusBadge } from "@/components/documents/DocumentStatusBadge";
+import { TextContentSkeleton } from "@/components/ui/loading-skeletons";
 import { useDocument } from "@/hooks/useDocuments";
 
 export default function DocumentDetailPage({ params }: { params: Promise<{ documentId: string }> }) {
@@ -28,7 +29,7 @@ export default function DocumentDetailPage({ params }: { params: Promise<{ docum
       />
 
       {isLoading || !doc ? (
-        <p className="text-sm text-muted-foreground">Loading...</p>
+        <TextContentSkeleton lines={5} />
       ) : (
         <>
           <div className="flex items-center justify-between">

@@ -18,7 +18,7 @@ const loginSchema = z.object({
 type LoginFormValues = z.infer<typeof loginSchema>;
 
 export function LoginForm() {
-  const { login, isLoggingIn } = useAuth();
+  const { login, isLoggingIn, isRedirecting } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const {
     control,
@@ -114,8 +114,14 @@ export function LoginForm() {
 
       {errors.root && <p className="text-xs text-red-600">{errors.root.message}</p>}
 
-      <Button fullWidth isPending={isLoggingIn} type="submit" variant="primary">
-        {isLoggingIn ? "Signing in..." : "Sign in"}
+      <Button
+        fullWidth
+        isDisabled={isLoggingIn}
+        isPending={isLoggingIn}
+        type="submit"
+        variant="primary"
+      >
+        {isRedirecting ? "Opening your dashboard..." : isLoggingIn ? "Signing in..." : "Sign in"}
       </Button>
     </form>
   );

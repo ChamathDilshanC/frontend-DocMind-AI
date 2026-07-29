@@ -6,6 +6,13 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  /* Brand palette (colorhunt 1B4EF5 / 3874FF / 5996FF / F4CEFF).
+     Exposed as Tailwind utilities: bg-brand-700, text-brand-500, etc. */
+  --color-brand-700: #1b4ef5;
+  --color-brand-600: #3874ff;
+  --color-brand-500: #5996ff;
+  --color-brand-100: #f4ceff;
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);

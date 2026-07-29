@@ -21,8 +21,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   if (!hasHydrated || !accessToken) {
     return (
-      <div className="flex flex-1 items-center justify-center">
-        <p className="text-sm text-muted-foreground">Loading...</p>
+      <div className="flex flex-1 flex-col items-center justify-center gap-4">
+        <Image src="/logo.png" alt="" width={40} height={40} className="animate-pulse" />
+        <p className="text-sm text-muted-foreground">Loading your workspace...</p>
       </div>
     );
   }

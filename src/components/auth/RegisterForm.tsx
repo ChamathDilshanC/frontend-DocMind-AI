@@ -130,7 +130,13 @@ export function RegisterForm() {
 
       {errors.root && <p className="text-xs text-red-600">{errors.root.message}</p>}
 
-      <Button fullWidth isPending={isRegistering} type="submit" variant="primary">
+      <Button
+        fullWidth
+        isDisabled={isRegistering}
+        isPending={isRegistering}
+        type="submit"
+        variant="primary"
+      >
         {isRegistering ? "Creating account..." : "Create account"}
       </Button>
     </form>

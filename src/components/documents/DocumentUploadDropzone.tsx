@@ -39,8 +39,8 @@ export function DocumentUploadDropzone() {
   };
 
   return (
-    <div className="w-full max-w-lg">
-      <h3 className="text-balance font-semibold text-foreground text-lg">Upload a document</h3>
+    <div className="w-full">
+      <h3 className="text-balance font-semibold text-foreground">Upload a document</h3>
 
       <div
         className={cn(
