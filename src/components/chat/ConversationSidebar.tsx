@@ -4,6 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { MessageSquare, Plus, Trash2 } from "lucide-react";
 import { Skeleton } from "@heroui/react";
+import { AnimatePresence, motion } from "framer-motion";
+import { gooeyToast } from "goey-toast";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useChatHistory, useCreateConversation, useDeleteConversation } from "@/hooks/useChat";
@@ -14,6 +16,18 @@ export function ConversationSidebar() {
   const { data, isLoading } = useChatHistory();
   const createConversation = useCreateConversation();
   const deleteConversation = useDeleteConversation();
+
+  const confirmDelete = (conversationId: string, title: string) => {
+    gooeyToast.warning(`Delete "${title}"?`, {
+      description: "This conversation and its messages will be permanently deleted.",
+      duration: 6000,
+      action: {
+        label: "Delete",
+        onClick: () => deleteConversation.mutate(conversationId),
+        successLabel: "Deleted",
+      },
+    });
+  };
 
   return (
     <div className="flex w-72 shrink-0 flex-col border-r bg-card">
@@ -46,44 +60,55 @@ export function ConversationSidebar() {
             </div>
           )}
 
-          {!isLoading &&
-            data?.items.map((conversation) => {
-              const active = pathname === `/chat/${conversation.id}`;
-              return (
-                <div
-                  key={conversation.id}
-                  className={cn(
-                    "group flex items-center justify-between gap-2 rounded-lg px-2 py-2 text-sm transition-colors",
-                    active ? "bg-brand-100 text-brand-700" : "hover:bg-muted",
-                  )}
-                >
-                  <Link href={`/chat/${conversation.id}`} className="min-w-0 flex-1">
-                    <span className="block truncate font-medium">{conversation.title}</span>
-                    {conversation.lastMessagePreview && (
-                      <span
-                        className={cn(
-                          "block truncate text-xs",
-                          active ? "text-brand-700/70" : "text-muted-foreground",
-                        )}
-                      >
-                        {conversation.lastMessagePreview}
-                      </span>
-                    )}
-                  </Link>
-                  <button
-                    type="button"
-                    className="shrink-0 opacity-0 transition-opacity group-hover:opacity-100 focus-visible:opacity-100"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      deleteConversation.mutate(conversation.id);
-                    }}
-                    aria-label={`Delete conversation ${conversation.title}`}
+          <AnimatePresence initial={false}>
+            {!isLoading &&
+              data?.items.map((conversation) => {
+                const active = pathname === `/chat/${conversation.id}`;
+                return (
+                  <motion.div
+                    key={conversation.id}
+                    layout
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0, marginBottom: 0 }}
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                    className="overflow-hidden"
                   >
-                    <Trash2 className="h-3.5 w-3.5 text-muted-foreground hover:text-destructive" />
-                  </button>
-                </div>
-              );
-            })}
+                    <div
+                      className={cn(
+                        "group flex items-center justify-between gap-2 rounded-lg px-2 py-2 text-sm transition-colors",
+                        active ? "bg-brand-100 text-brand-700" : "hover:bg-muted",
+                      )}
+                    >
+                      <Link href={`/chat/${conversation.id}`} className="min-w-0 flex-1">
+                        <span className="block truncate font-medium">{conversation.title}</span>
+                        {conversation.lastMessagePreview && (
+                          <span
+                            className={cn(
+                              "block truncate text-xs",
+                              active ? "text-brand-700/70" : "text-muted-foreground",
+                            )}
+                          >
+                            {conversation.lastMessagePreview}
+                          </span>
+                        )}
+                      </Link>
+                      <button
+                        type="button"
+                        className="shrink-0 opacity-0 transition-opacity group-hover:opacity-100 focus-visible:opacity-100"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          confirmDelete(conversation.id, conversation.title);
+                        }}
+                        aria-label={`Delete conversation ${conversation.title}`}
+                      >
+                        <Trash2 className="h-3.5 w-3.5 text-muted-foreground hover:text-destructive" />
+                      </button>
+                    </div>
+                  </motion.div>
+                );
+              })}
+          </AnimatePresence>
         </div>
       </ScrollArea>
     </div>

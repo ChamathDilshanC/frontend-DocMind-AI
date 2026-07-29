@@ -8,7 +8,7 @@ import { bricolage } from "@/lib/fonts";
 export default function RegisterPage() {
   return (
     <div>
-      <div className="mb-8 flex justify-end">
+      <div className="mb-6 flex justify-end">
         <Typography type="body-xs" className="text-[#5b6478]">
           Already have an account?{" "}
           <Link href="/login" className="font-semibold text-[#2743ff] hover:underline">

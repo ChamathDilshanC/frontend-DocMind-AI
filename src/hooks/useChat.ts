@@ -2,6 +2,7 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { gooeyToast as toast } from "goey-toast";
 import { chatApi } from "@/lib/api/chat";
 
 export function useChatHistory(pageNumber = 1, pageSize = 20) {
@@ -36,5 +37,6 @@ export function useDeleteConversation() {
   return useMutation({
     mutationFn: (conversationId: string) => chatApi.deleteConversation(conversationId),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["conversations"] }),
+    onError: (error: Error) => toast.error(error.message || "Failed to delete conversation"),
   });
 }

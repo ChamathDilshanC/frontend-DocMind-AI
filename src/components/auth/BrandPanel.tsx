@@ -21,12 +21,20 @@ export function BrandPanel() {
           backgroundSize: "24px 24px",
         }}
       />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -top-24 -right-20 h-72 w-72 rounded-full bg-[#ffc95c]/25 blur-[90px] [animation:float-slow_12s_ease-in-out_infinite]"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -bottom-28 -left-20 h-80 w-80 rounded-full bg-[#8fa8ff]/30 blur-[100px] [animation:float-slower_14s_ease-in-out_infinite]"
+      />
 
-      <div className="relative">
+      <div className="relative animate-in fade-in duration-500">
         <span className={`${bricolage.className} text-xl font-bold text-white`}>DocMind AI</span>
       </div>
 
-      <div className="relative mt-10 lg:mt-0">
+      <div className="relative mt-10 animate-in fade-in slide-in-from-bottom-4 duration-700 lg:mt-0">
         <Typography.Heading
           level={1}
           className={`${bricolage.className} text-4xl font-extrabold leading-[1.1] tracking-tight text-white lg:text-5xl`}
@@ -44,7 +52,7 @@ export function BrandPanel() {
           searching through pages.
         </Typography.Paragraph>
 
-        <div className="mt-8 max-w-sm rounded-2xl bg-white/[0.06] p-5">
+        <div className="liquid-glass mt-8 max-w-sm rounded-2xl p-5">
           <ul className="space-y-3">
             {highlights.map((line) => (
               <li key={line} className="flex items-start gap-2.5">
@@ -58,13 +66,16 @@ export function BrandPanel() {
         </div>
       </div>
 
-      <div className="relative mt-10 lg:mt-0">
+      <div className="relative mt-10 animate-in fade-in duration-700 delay-150 lg:mt-0">
         <Typography type="body-xs" weight="semibold" className="uppercase tracking-wider text-white/50">
           Built with
         </Typography>
-        <div className="mt-3 flex flex-wrap gap-x-6 gap-y-2">
+        <div className="mt-3 flex flex-wrap gap-2">
           {builtWith.map((name) => (
-            <span key={name} className="text-sm font-medium tracking-wide text-white/60">
+            <span
+              key={name}
+              className="liquid-glass rounded-full px-3 py-1 text-xs font-medium tracking-wide text-white/70"
+            >
               {name}
             </span>
           ))}
