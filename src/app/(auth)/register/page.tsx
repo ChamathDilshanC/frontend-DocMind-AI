@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import { GoogleSignInButton } from "@/components/auth/GoogleSignInButton";
 import { RegisterForm } from "@/components/auth/RegisterForm";
@@ -12,7 +13,9 @@ export default function RegisterPage() {
         <CardDescription>Start chatting with your documents in minutes.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <RegisterForm />
+        <Suspense fallback={null}>
+          <RegisterForm />
+        </Suspense>
 
         <div className="flex items-center gap-2">
           <Separator className="flex-1" />

@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { LandingHero } from "@/components/landing/LandingHero";
 import { useAuthStore } from "@/stores/auth-store";
 
 export default function Home() {
@@ -9,9 +10,14 @@ export default function Home() {
   const { accessToken, hasHydrated } = useAuthStore();
 
   useEffect(() => {
-    if (!hasHydrated) return;
-    router.replace(accessToken ? "/dashboard" : "/login");
+    if (hasHydrated && accessToken) {
+      router.replace("/dashboard");
+    }
   }, [hasHydrated, accessToken, router]);
 
-  return null;
+  if (!hasHydrated || accessToken) {
+    return null;
+  }
+
+  return <LandingHero />;
 }
