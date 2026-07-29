@@ -6,6 +6,7 @@ import { gooeyToast as toast } from "goey-toast";
 import { Sparkles } from "lucide-react";
 import { ChatInput } from "@/components/chat/ChatInput";
 import { MessageBubble, type DisplayMessage } from "@/components/chat/MessageBubble";
+import { TypingIndicator } from "@/components/chat/TypingIndicator";
 import { ChatMessagesSkeleton } from "@/components/ui/loading-skeletons";
 import { useConversation } from "@/hooks/useChat";
 import { chatApi } from "@/lib/api/chat";
@@ -78,11 +79,13 @@ export function ChatWindow({ conversationId }: { conversationId: string }) {
   }
   if (streaming) {
     optimisticMessages.push({ id: streaming.messageId, role: "Assistant", content: streaming.content, isStreaming: true });
-  } else if (isAsking) {
-    optimisticMessages.push({ id: "pending-answer", role: "Assistant", content: "Thinking...", isStreaming: true });
   }
 
   const messages = [...persistedMessages, ...optimisticMessages];
+  // Between sending and the first streamed token there is nothing to render as
+  // a message yet, so show the animated indicator instead of a placeholder
+  // bubble containing the literal word "Thinking...".
+  const showTypingIndicator = isAsking && !streaming;
 
   return (
     <div className="flex flex-1 flex-col overflow-hidden">
@@ -109,6 +112,7 @@ export function ChatWindow({ conversationId }: { conversationId: string }) {
         ) : (
           messages.map((message) => <MessageBubble key={message.id} message={message} />)
         )}
+        {showTypingIndicator && <TypingIndicator />}
         <div ref={scrollRef} />
       </div>
       <ChatInput onSend={handleSend} disabled={isAsking} />

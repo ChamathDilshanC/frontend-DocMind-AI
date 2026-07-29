@@ -10,10 +10,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { FormCardSkeleton } from "@/components/ui/loading-skeletons";
+import { UserAvatar } from "@/components/ui/user-avatar";
 import { useAuth } from "@/hooks/useAuth";
 import { ApiError } from "@/lib/api/client";
 import { usersApi } from "@/lib/api/users";
-import { initials } from "@/lib/utils";
 
 const profileSchema = z.object({ name: z.string().min(1, "Name is required").max(200) });
 type ProfileValues = z.infer<typeof profileSchema>;
@@ -105,9 +105,12 @@ export default function SettingsPage() {
           <>
             {/* Identity summary */}
             <div className="flex items-center gap-4 rounded-2xl border bg-card p-6">
-              <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-brand-700 text-lg font-semibold text-white">
-                {profile ? initials(profile.name) : "?"}
-              </span>
+              <UserAvatar
+                avatarUrl={profile?.avatarUrl}
+                className="h-14 w-14 shrink-0"
+                fallbackClassName="bg-brand-700 text-lg text-white"
+                name={profile?.name ?? ""}
+              />
               <div className="min-w-0">
                 <p className="truncate text-lg font-semibold">{profile?.name}</p>
                 <p className="truncate text-sm text-muted-foreground">{profile?.email}</p>

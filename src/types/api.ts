@@ -3,6 +3,8 @@ export interface UserDto {
   name: string;
   email: string;
   role: "User" | "Admin";
+  /** Google profile photo URL. Null for accounts that never signed in with Google. */
+  avatarUrl: string | null;
 }
 
 export interface UserProfileDto extends UserDto {

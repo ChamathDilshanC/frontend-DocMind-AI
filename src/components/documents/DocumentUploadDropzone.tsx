@@ -44,8 +44,8 @@ export function DocumentUploadDropzone() {
 
       <div
         className={cn(
-          "mt-4 flex justify-center space-x-4 rounded-md border border-dashed px-6 py-10 transition-colors",
-          isDragging ? "border-primary bg-primary/5" : "border-input",
+          "mt-4 flex flex-col items-center justify-center rounded-xl border border-dashed px-6 py-10 text-center transition-colors",
+          isDragging ? "border-brand-600 bg-brand-100/60" : "border-input",
         )}
         onDragOver={(e) => {
           e.preventDefault();
@@ -58,33 +58,31 @@ export function DocumentUploadDropzone() {
           handleFiles(e.dataTransfer.files);
         }}
       >
-        <div className="sm:flex sm:items-center sm:gap-x-3">
-          <Upload aria-hidden className="mx-auto h-8 w-8 text-muted-foreground sm:mx-0 sm:h-6 sm:w-6" />
-          <div className="mt-4 flex text-foreground text-sm leading-6 sm:mt-0">
-            <p>Drag and drop or</p>
-            <Label
-              className="relative cursor-pointer rounded-sm pl-1 font-medium text-primary hover:underline hover:underline-offset-4"
-              htmlFor="document-upload-input"
-            >
-              <span>choose file</span>
-              <input
-                ref={inputRef}
-                id="document-upload-input"
-                name="document-upload-input"
-                type="file"
-                accept={ACCEPTED_EXTENSIONS.join(",")}
-                className="sr-only"
-                onChange={(e) => handleFiles(e.target.files)}
-              />
-            </Label>
-            <p className="text-pretty pl-1">to upload</p>
-          </div>
-        </div>
-      </div>
+        <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-100 text-brand-700">
+          <Upload aria-hidden className="h-5 w-5" />
+        </span>
 
-      <p className="mt-2 text-pretty text-muted-foreground text-xs leading-5">
-        Accepted file types: PDF, DOCX.
-      </p>
+        <p className="mt-4 text-sm leading-6 text-foreground">
+          Drag and drop, or{" "}
+          <Label
+            className="cursor-pointer font-medium text-brand-600 hover:underline hover:underline-offset-4"
+            htmlFor="document-upload-input"
+          >
+            choose a file
+            <input
+              ref={inputRef}
+              id="document-upload-input"
+              name="document-upload-input"
+              type="file"
+              accept={ACCEPTED_EXTENSIONS.join(",")}
+              className="sr-only"
+              onChange={(e) => handleFiles(e.target.files)}
+            />
+          </Label>
+        </p>
+
+        <p className="mt-1 text-xs text-muted-foreground">PDF or DOCX</p>
+      </div>
 
       {selectedFile && (
         <>
