@@ -1,7 +1,10 @@
 import { useAuthStore } from "@/stores/auth-store";
 import type { ApiProblemDetails, AuthResultDto } from "@/types/api";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:5180";
+// Strip any trailing slash(es) so a stray trailing "/" in the env var never
+// produces a double slash when concatenated with a "/"-prefixed path below
+// (ASP.NET Core routing 404s on the empty path segment that creates).
+const API_BASE_URL = (process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:5180").replace(/\/+$/, "");
 
 export class ApiError extends Error {
   status: number;
