@@ -1,0 +1,102 @@
+"use client";
+
+import { Search } from "lucide-react";
+import { useRouter } from "next/navigation";
+import * as React from "react";
+import { useEffect } from "react";
+import {
+  Command,
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+} from "@/components/ui/command";
+import { SidebarHeader } from "@/components/ui/sidebar";
+import { useDocuments } from "@/hooks/useDocuments";
+import type { NavItem } from "@/components/sidebar-01/types";
+
+interface NavHeaderProps {
+  items: NavItem[];
+}
+
+export function NavHeader({ items }: NavHeaderProps) {
+  const [open, setOpen] = React.useState(false);
+  const router = useRouter();
+  const { data } = useDocuments(1, 10);
+  const documents = data?.items ?? [];
+
+  useEffect(() => {
+    const down = (e: KeyboardEvent) => {
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setOpen((open) => !open);
+      }
+    };
+    document.addEventListener("keydown", down);
+    return () => document.removeEventListener("keydown", down);
+  }, []);
+
+  const go = (url: string) => {
+    setOpen(false);
+    router.push(url);
+  };
+
+  return (
+    <>
+      <SidebarHeader>
+        <div
+          className="flex cursor-pointer items-center justify-between px-2 pt-3 pb-0"
+          onClick={() => setOpen(true)}
+        >
+          <div className="flex flex-1 items-center gap-3">
+            <Search className="h-4 w-4 text-muted-foreground" />
+            <span className="font-normal text-muted-foreground text-sm">
+              Search
+            </span>
+          </div>
+          <div className="flex items-center justify-center rounded-md border border-border px-2 py-1">
+            <kbd className="inline-flex font-[inherit] font-medium text-muted-foreground text-xs">
+              <span className="opacity-70">⌘K</span>
+            </kbd>
+          </div>
+        </div>
+      </SidebarHeader>
+
+      <CommandDialog onOpenChange={setOpen} open={open}>
+        <Command>
+          <CommandInput placeholder="Jump to a page or document..." />
+          <CommandList>
+            <CommandEmpty>No results found.</CommandEmpty>
+            <CommandGroup heading="Navigation">
+              {items.map((item) => (
+                <CommandItem className="py-2!" key={item.id} onSelect={() => go(item.url)}>
+                  <item.icon className="mr-2 h-4 w-4" />
+                  <span>{item.title}</span>
+                </CommandItem>
+              ))}
+            </CommandGroup>
+            {documents.length > 0 && (
+              <>
+                <CommandSeparator className="my-2" />
+                <CommandGroup heading="Documents">
+                  {documents.map((doc) => (
+                    <CommandItem
+                      className="py-2!"
+                      key={doc.id}
+                      onSelect={() => go(`/documents/${doc.id}`)}
+                    >
+                      <span className="truncate">{doc.name}</span>
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </>
+            )}
+          </CommandList>
+        </Command>
+      </CommandDialog>
+    </>
+  );
+}

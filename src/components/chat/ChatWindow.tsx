@@ -45,13 +45,13 @@ export function ChatWindow({ conversationId }: { conversationId: string }) {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [conversation, streaming, pendingQuestion]);
 
-  const handleSend = async (question: string) => {
+  const handleSend = async (question: string, documentId?: string) => {
     setPendingQuestion(question);
     setStreaming(null);
     setIsAsking(true);
 
     try {
-      await chatApi.ask(question, conversationId);
+      await chatApi.ask(question, conversationId, documentId);
       await queryClient.invalidateQueries({ queryKey: ["conversations", conversationId] });
       await queryClient.invalidateQueries({ queryKey: ["conversations"] });
     } catch (error) {
