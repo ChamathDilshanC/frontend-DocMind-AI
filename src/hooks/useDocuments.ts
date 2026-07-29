@@ -1,7 +1,7 @@
 "use client";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
+import { gooeyToast as toast } from "goey-toast";
 import { documentsApi } from "@/lib/api/documents";
 
 export function useDocuments(pageNumber = 1, pageSize = 20) {

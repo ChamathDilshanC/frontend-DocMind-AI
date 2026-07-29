@@ -4,7 +4,7 @@ import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+import { gooeyToast as toast } from "goey-toast";
 import { z } from "zod";
 import { useAuth } from "@/hooks/useAuth";
 import { ApiError } from "@/lib/api/client";

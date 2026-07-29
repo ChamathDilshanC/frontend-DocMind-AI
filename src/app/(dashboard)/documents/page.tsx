@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
+import { gooeyToast as toast } from "goey-toast";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DocumentList } from "@/components/documents/DocumentList";
 import { DocumentUploadDropzone } from "@/components/documents/DocumentUploadDropzone";

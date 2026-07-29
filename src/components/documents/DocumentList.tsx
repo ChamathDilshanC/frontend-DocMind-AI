@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Download, MoreHorizontal, RefreshCw, Trash2 } from "lucide-react";
-import { toast } from "sonner";
+import { gooeyToast as toast } from "goey-toast";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
