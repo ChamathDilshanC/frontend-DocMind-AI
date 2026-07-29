@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { LandingHero } from "@/components/landing/LandingHero";
+import { LandingPage } from "@/components/landing/LandingPage";
 import { useAuthStore } from "@/stores/auth-store";
 
 export default function Home() {
@@ -19,5 +19,5 @@ export default function Home() {
     return null;
   }
 
-  return <LandingHero />;
+  return <LandingPage />;
 }

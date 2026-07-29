@@ -4,7 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Code2, FileText, Globe } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { brace } from "@/lib/fonts";
 
 const VIDEO_URL =
   "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260328_115001_bcdaa3b4-03de-47e7-ad63-ae3e392c32d4.mp4";
@@ -108,8 +109,8 @@ export function LandingHero() {
               <span className="text-white font-semibold text-lg">DocMind AI</span>
             </Link>
             <div className="hidden md:flex items-center gap-8">
-              <a href="#features" className="text-white/80 hover:text-white transition-colors text-sm font-medium">
-                Features
+              <a href="#about" className="text-white/80 hover:text-white transition-colors text-sm font-medium">
+                About
               </a>
               <a href="#how-it-works" className="text-white/80 hover:text-white transition-colors text-sm font-medium">
                 How it works
@@ -137,8 +138,7 @@ export function LandingHero() {
 
       <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-6 py-12 text-center -translate-y-[20%]">
         <h1
-          className="text-5xl md:text-6xl lg:text-7xl text-white mb-8 tracking-tight whitespace-nowrap"
-          style={{ fontFamily: "'Instrument Serif', serif" }}
+          className={`${brace.className} text-5xl md:text-6xl lg:text-7xl text-white mb-8 tracking-tight whitespace-nowrap`}
         >
           Ask your documents
         </h1>
@@ -174,36 +174,6 @@ export function LandingHero() {
             </a>
           </div>
         </div>
-      </div>
-
-      <div className="relative z-10 flex justify-center gap-4 pb-12">
-        <a
-          href="https://github.com/ChamathDilshanC/Main-DocMind-AI"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="GitHub"
-          className="liquid-glass rounded-full p-4 text-white/80 hover:text-white hover:bg-white/5 transition-all"
-        >
-          <Code2 size={20} />
-        </a>
-        <a
-          href="https://docmind-ai-api-onsp.onrender.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="API status"
-          className="liquid-glass rounded-full p-4 text-white/80 hover:text-white hover:bg-white/5 transition-all"
-        >
-          <Globe size={20} />
-        </a>
-        <a
-          href="https://github.com/ChamathDilshanC/backend-DocMind-AI#readme"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Documentation"
-          className="liquid-glass rounded-full p-4 text-white/80 hover:text-white hover:bg-white/5 transition-all"
-        >
-          <FileText size={20} />
-        </a>
       </div>
     </div>
   );
