@@ -1,6 +1,8 @@
 "use client";
 
+import { useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
+import { gooeyToast as toast } from "goey-toast";
 import { useRouter } from "next/navigation";
 import { authApi } from "@/lib/api/auth";
 import { useAuthStore } from "@/stores/auth-store";
@@ -9,10 +11,18 @@ export function useAuth() {
   const router = useRouter();
   const { user, accessToken, hasHydrated, setSession, clearSession } = useAuthStore();
 
+  // Warm the dashboard route's client-side cache ahead of time so the
+  // post-login redirect doesn't also have to wait on fetching its JS/RSC
+  // payload on top of the auth request itself.
+  useEffect(() => {
+    router.prefetch("/dashboard");
+  }, [router]);
+
   const loginMutation = useMutation({
     mutationFn: ({ email, password }: { email: string; password: string }) => authApi.login(email, password),
     onSuccess: (result) => {
       setSession(result);
+      toast.success(`Welcome back, ${result.user.name}!`);
       router.push("/dashboard");
     },
   });
@@ -22,6 +32,7 @@ export function useAuth() {
       authApi.register(name, email, password),
     onSuccess: (result) => {
       setSession(result);
+      toast.success(`Welcome, ${result.user.name}!`);
       router.push("/dashboard");
     },
   });
@@ -30,6 +41,7 @@ export function useAuth() {
     mutationFn: (idToken: string) => authApi.googleSignIn(idToken),
     onSuccess: (result) => {
       setSession(result);
+      toast.success(`Welcome, ${result.user.name}!`);
       router.push("/dashboard");
     },
   });
