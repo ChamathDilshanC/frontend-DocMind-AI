@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import Link from "next/link";
+import NextLink from "next/link";
+import { Button, InputGroup, Link, TextField, Typography } from "@heroui/react";
 import { ArrowRight } from "lucide-react";
 import { brace } from "@/lib/fonts";
 
@@ -104,71 +105,78 @@ export function LandingHero() {
       <nav className="relative z-20 pl-6 pr-6 py-6">
         <div className="rounded-full px-6 py-3 flex items-center justify-between max-w-5xl mx-auto">
           <div className="flex items-center gap-8">
-            <Link href="/" className="flex items-center gap-2">
+            <NextLink href="/" className="flex items-center gap-2">
               <Image src="/logo.png" alt="" width={24} height={24} />
               <span className="text-white font-semibold text-lg">DocMind AI</span>
-            </Link>
+            </NextLink>
             <div className="hidden md:flex items-center gap-8">
-              <a href="#about" className="text-white/80 hover:text-white transition-colors text-sm font-medium">
+              <Link href="#about" className="text-white/80 hover:text-white text-sm font-medium">
                 About
-              </a>
-              <a href="#how-it-works" className="text-white/80 hover:text-white transition-colors text-sm font-medium">
+              </Link>
+              <Link href="#how-it-works" className="text-white/80 hover:text-white text-sm font-medium">
                 How it works
-              </a>
-              <a
+              </Link>
+              <Link
                 href="https://github.com/ChamathDilshanC/Main-DocMind-AI"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-white/80 hover:text-white transition-colors text-sm font-medium"
+                className="text-white/80 hover:text-white text-sm font-medium"
               >
                 GitHub
-              </a>
+              </Link>
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <Link href="/register" className="text-white text-sm font-medium">
+            <NextLink href="/register" className="text-white text-sm font-medium">
               Sign Up
-            </Link>
-            <Link href="/login" className="liquid-glass rounded-full px-6 py-2 text-white text-sm font-medium">
+            </NextLink>
+            <NextLink
+              href="/login"
+              className="liquid-glass rounded-full px-6 py-2 text-white text-sm font-medium"
+            >
               Login
-            </Link>
+            </NextLink>
           </div>
         </div>
       </nav>
 
       <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-6 py-12 text-center -translate-y-[20%]">
-        <h1
+        <Typography.Heading
+          level={1}
           className={`${brace.className} text-5xl md:text-6xl lg:text-7xl text-white mb-8 tracking-tight whitespace-nowrap`}
         >
           Ask your documents
-        </h1>
+        </Typography.Heading>
 
         <div className="max-w-xl w-full space-y-4">
-          <form onSubmit={handleEmailSubmit} className="liquid-glass rounded-full pl-6 pr-2 py-2 flex items-center gap-3">
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              className="flex-1 min-w-0 bg-transparent outline-none text-white placeholder:text-white/40 text-base"
-            />
-            <button type="submit" aria-label="Get started" className="bg-white rounded-full p-3 text-black shrink-0">
-              <ArrowRight size={20} />
-            </button>
+          <form onSubmit={handleEmailSubmit}>
+            <TextField aria-label="Email" fullWidth isRequired value={email} onChange={setEmail}>
+              <InputGroup className="liquid-glass rounded-full pl-4 pr-2 py-2" fullWidth>
+                <InputGroup.Input
+                  type="email"
+                  placeholder="Enter your email"
+                  className="text-white placeholder:text-white/40 text-base"
+                />
+                <InputGroup.Suffix className="pr-0">
+                  <Button isIconOnly aria-label="Get started" className="bg-white rounded-full text-black" type="submit">
+                    <ArrowRight size={20} />
+                  </Button>
+                </InputGroup.Suffix>
+              </InputGroup>
+            </TextField>
           </form>
 
-          <p className="text-white text-sm leading-relaxed px-4">
+          <Typography.Paragraph className="text-white px-4">
             Upload PDF and DOCX files, ask questions in plain language, and get grounded answers with page-level
             citations — powered by retrieval-augmented generation.
-          </p>
+          </Typography.Paragraph>
 
           <div className="flex justify-center">
             <a
               href="https://docmind-ai-api-onsp.onrender.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="liquid-glass rounded-full px-8 py-3 text-white text-sm font-medium hover:bg-white/5 transition-colors"
+              className="liquid-glass rounded-full px-8 py-3 text-white text-sm font-medium"
             >
               See how it works
             </a>

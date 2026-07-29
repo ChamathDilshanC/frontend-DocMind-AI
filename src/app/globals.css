@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "@heroui/styles";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
@@ -49,6 +50,11 @@
 }
 
 :root {
+  /* HeroUI accent override: brand cobalt #2743ff, so Button/Checkbox/focus
+     rings match the brand instead of HeroUI's default blue. */
+  --accent: oklch(0.5123 0.2726 267.03);
+  --accent-foreground: oklch(1 0 0);
+
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);

@@ -1,3 +1,4 @@
+import { Typography } from "@heroui/react";
 import { Check } from "lucide-react";
 import { bricolage } from "@/lib/fonts";
 
@@ -26,7 +27,8 @@ export function BrandPanel() {
       </div>
 
       <div className="relative mt-10 lg:mt-0">
-        <h1
+        <Typography.Heading
+          level={1}
           className={`${bricolage.className} text-4xl font-extrabold leading-[1.1] tracking-tight text-white lg:text-5xl`}
         >
           Ask your documents,
@@ -36,18 +38,20 @@ export function BrandPanel() {
             faster.
             <span aria-hidden className="absolute inset-x-0 -bottom-1 h-[6px] bg-[#ffc95c]" />
           </span>
-        </h1>
-        <p className="mt-5 max-w-md text-base text-white/70">
+        </Typography.Heading>
+        <Typography.Paragraph className="mt-5 max-w-md text-white/70">
           Upload a document, ask a question in plain language, and get a grounded answer — no more manually
           searching through pages.
-        </p>
+        </Typography.Paragraph>
 
         <div className="mt-8 max-w-sm rounded-2xl bg-white/[0.06] p-5">
           <ul className="space-y-3">
             {highlights.map((line) => (
-              <li key={line} className="flex items-start gap-2.5 text-sm text-white/90">
+              <li key={line} className="flex items-start gap-2.5">
                 <Check className="mt-0.5 shrink-0 text-[#ffc95c]" size={16} />
-                {line}
+                <Typography type="body-sm" className="text-white/90">
+                  {line}
+                </Typography>
               </li>
             ))}
           </ul>
@@ -55,7 +59,9 @@ export function BrandPanel() {
       </div>
 
       <div className="relative mt-10 lg:mt-0">
-        <p className="text-xs font-semibold uppercase tracking-wider text-white/50">Built with</p>
+        <Typography type="body-xs" weight="semibold" className="uppercase tracking-wider text-white/50">
+          Built with
+        </Typography>
         <div className="mt-3 flex flex-wrap gap-x-6 gap-y-2">
           {builtWith.map((name) => (
             <span key={name} className="text-sm font-medium tracking-wide text-white/60">
