@@ -55,6 +55,13 @@
   --accent: oklch(0.5123 0.2726 267.03);
   --accent-foreground: oklch(1 0 0);
 
+  /* HeroUI's --field-placeholder falls back to var(--muted), but our own
+     --muted below (a near-white shadcn background fill, not a text color)
+     collides with that name and made every HeroUI input's placeholder text
+     render nearly invisible (light-on-white). Give HeroUI's placeholder its
+     own real medium-gray value instead of inheriting the colliding one. */
+  --field-placeholder: oklch(0.5517 0.0138 285.94);
+
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
