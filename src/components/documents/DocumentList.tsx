@@ -1,7 +1,9 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Download, FileText, MessageSquare, MoreHorizontal, RefreshCw, Trash2 } from "lucide-react";
+import { Label, ProgressBar } from "@heroui/react";
 import { gooeyToast as toast } from "goey-toast";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,7 +17,15 @@ import { ListRowsSkeleton } from "@/components/ui/loading-skeletons";
 import { DocumentStatusBadge } from "@/components/documents/DocumentStatusBadge";
 import { useDeleteDocument, useDocuments, useRetryDocument } from "@/hooks/useDocuments";
 import { documentsApi } from "@/lib/api/documents";
+import { getHubConnection } from "@/lib/signalr/connection";
 import type { DocumentDto } from "@/types/api";
+
+const IN_FLIGHT_STATUSES = new Set(["Uploaded", "Queued", "Processing"]);
+
+interface DocumentProgress {
+  stage: string;
+  percent: number;
+}
 
 function formatBytes(bytes: number) {
   if (bytes < 1024) return `${bytes} B`;
@@ -41,6 +51,23 @@ export function DocumentList() {
   const { data, isLoading } = useDocuments();
   const deleteDocument = useDeleteDocument();
   const retryDocument = useRetryDocument();
+  const [progressByDocument, setProgressByDocument] = useState<Record<string, DocumentProgress>>({});
+
+  useEffect(() => {
+    const hub = getHubConnection();
+
+    const onProgress = (payload: { documentId: string; stage: string; percent?: number | null }) => {
+      setProgressByDocument((prev) => ({
+        ...prev,
+        [payload.documentId]: { stage: payload.stage, percent: payload.percent ?? 0 },
+      }));
+    };
+
+    hub.on("DocumentProgress", onProgress);
+    return () => {
+      hub.off("DocumentProgress", onProgress);
+    };
+  }, []);
 
   if (isLoading) {
     return <ListRowsSkeleton rows={4} />;
@@ -80,6 +107,22 @@ export function DocumentList() {
             </p>
             {doc.status === "Failed" && doc.processingError && (
               <p className="mt-1 truncate text-xs text-destructive">{doc.processingError}</p>
+            )}
+            {IN_FLIGHT_STATUSES.has(doc.status) && (
+              <ProgressBar
+                aria-label={`${doc.name} processing progress`}
+                className="mt-2 max-w-xs"
+                size="sm"
+                value={progressByDocument[doc.id]?.percent ?? 0}
+              >
+                <Label className="text-xs font-normal text-muted-foreground">
+                  {progressByDocument[doc.id]?.stage ?? "Queued"}
+                </Label>
+                <ProgressBar.Output className="text-xs text-muted-foreground" />
+                <ProgressBar.Track>
+                  <ProgressBar.Fill />
+                </ProgressBar.Track>
+              </ProgressBar>
             )}
           </div>
 
