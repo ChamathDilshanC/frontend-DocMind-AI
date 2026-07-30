@@ -1,4 +1,7 @@
 import { Sparkles } from "lucide-react";
+import { TextType } from "@/components/ui/text-type";
+
+const SEARCH_PHRASES = ["Searching your documents", "Reading the relevant pages", "Drafting an answer"];
 
 /**
  * Shown between sending a question and the first streamed token arriving.
@@ -23,9 +26,17 @@ export function TypingIndicator() {
             />
           ))}
         </span>
-        <span className="bg-gradient-to-r from-brand-700 via-brand-400 to-brand-700 bg-[length:200%_100%] bg-clip-text text-sm font-medium text-transparent [animation:shimmer_2s_linear_infinite]">
-          Searching your documents
-        </span>
+        <TextType
+          text={SEARCH_PHRASES}
+          as="span"
+          className="text-sm font-medium text-brand-700"
+          typingSpeed={35}
+          deletingSpeed={20}
+          pauseDuration={1200}
+          cursorCharacter="●"
+          cursorClassName="text-brand-400"
+          cursorBlinkDuration={0.6}
+        />
         <span className="sr-only" role="status">
           Generating an answer
         </span>

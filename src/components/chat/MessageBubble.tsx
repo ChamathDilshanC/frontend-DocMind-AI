@@ -1,5 +1,6 @@
 import { Sparkles } from "lucide-react";
 import { CitationList } from "@/components/chat/CitationList";
+import { StreamingCursor } from "@/components/chat/StreamingCursor";
 import type { CitationDto } from "@/types/api";
 
 export interface DisplayMessage {
@@ -31,9 +32,7 @@ export function MessageBubble({ message }: { message: DisplayMessage }) {
       <div className="min-w-0 max-w-[85%] rounded-2xl rounded-tl-md bg-muted px-4 py-2.5 text-sm">
         <p className="whitespace-pre-wrap leading-relaxed">
           {message.content}
-          {message.isStreaming && (
-            <span className="ml-0.5 inline-block h-4 w-1.5 animate-pulse bg-current align-middle" />
-          )}
+          {message.isStreaming && <StreamingCursor />}
         </p>
         {message.citations && message.citations.length > 0 && <CitationList citations={message.citations} />}
       </div>
