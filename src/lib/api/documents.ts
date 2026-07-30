@@ -21,6 +21,8 @@ export const documentsApi = {
 
   remove: (id: string) => apiFetch<void>(`/api/documents/${id}`, { method: "DELETE" }),
 
+  removeAll: () => apiFetch<void>("/api/documents", { method: "DELETE" }),
+
   downloadUrl: (id: string) => `${API_BASE_URL}/api/documents/${id}/download`,
 
   retry: (documentId: string) =>

@@ -54,6 +54,18 @@ export function useDeleteDocument() {
   });
 }
 
+export function useDeleteAllDocuments() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => documentsApi.removeAll(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["documents"] });
+      toast.success("All documents deleted");
+    },
+    onError: (error: Error) => toast.error(error.message || "Failed to delete documents"),
+  });
+}
+
 export function useRenameDocument() {
   const queryClient = useQueryClient();
   return useMutation({
