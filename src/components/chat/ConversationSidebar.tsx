@@ -1,28 +1,59 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { MessageSquare, Plus, Trash2 } from "lucide-react";
 import { Skeleton } from "@heroui/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { gooeyToast } from "goey-toast";
 import { Button } from "@/components/ui/button";
-import { useChatHistory, useCreateConversation, useDeleteConversation } from "@/hooks/useChat";
+import { useChatHistory, useCreateConversation, useDeleteAllConversations, useDeleteConversation } from "@/hooks/useChat";
 import { cn } from "@/lib/utils";
 
 export function ConversationSidebar() {
   const pathname = usePathname();
+  const router = useRouter();
   const { data, isLoading } = useChatHistory();
   const createConversation = useCreateConversation();
   const deleteConversation = useDeleteConversation();
+  const clearAllConversations = useDeleteAllConversations();
 
   const confirmDelete = (conversationId: string, title: string) => {
+    const isActive = pathname === `/chat/${conversationId}`;
+
     gooeyToast.warning(`Delete "${title}"?`, {
       description: "This conversation and its messages will be permanently deleted.",
       duration: 6000,
       action: {
         label: "Delete",
-        onClick: () => deleteConversation.mutate(conversationId),
+        onClick: () => {
+          // Deleting the conversation currently open leaves the chat window pointed at
+          // an id that no longer exists, so send it back to the empty state.
+          deleteConversation.mutate(conversationId, {
+            onSuccess: () => {
+              if (isActive) router.push("/chat");
+            },
+          });
+        },
+        successLabel: "Deleted",
+      },
+    });
+  };
+
+  const confirmClearAll = () => {
+    gooeyToast.warning("Delete all conversations?", {
+      description: "All chats and their messages will be permanently deleted. This can't be undone.",
+      duration: 6000,
+      action: {
+        label: "Delete all",
+        onClick: () => {
+          const wasViewingAConversation = pathname.startsWith("/chat/");
+          clearAllConversations.mutate(undefined, {
+            onSuccess: () => {
+              if (wasViewingAConversation) router.push("/chat");
+            },
+          });
+        },
         successLabel: "Deleted",
       },
     });
@@ -30,15 +61,28 @@ export function ConversationSidebar() {
 
   return (
     <div className="flex w-72 shrink-0 flex-col border-r bg-card">
-      <div className="border-b p-3">
+      <div className="flex items-center gap-2 border-b p-3">
         <Button
-          className="w-full bg-brand-700 text-white hover:bg-brand-600"
+          className="flex-1 bg-brand-700 text-white hover:bg-brand-600"
           onClick={() => createConversation.mutate(undefined)}
           disabled={createConversation.isPending}
         >
           <Plus className="mr-2 h-4 w-4" />
           New chat
         </Button>
+        {!isLoading && (data?.items.length ?? 0) > 0 && (
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-9 w-9 shrink-0 text-muted-foreground hover:text-destructive"
+            onClick={confirmClearAll}
+            disabled={clearAllConversations.isPending}
+            aria-label="Clear all chats"
+            title="Clear all chats"
+          >
+            <Trash2 className="h-4 w-4" />
+          </Button>
+        )}
       </div>
 
       <div className="flex-1 overflow-hidden">

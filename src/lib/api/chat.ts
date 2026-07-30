@@ -22,6 +22,8 @@ export const chatApi = {
   deleteConversation: (conversationId: string) =>
     apiFetch<void>(`/api/chat/conversations/${conversationId}`, { method: "DELETE" }),
 
+  deleteAllConversations: () => apiFetch<void>("/api/chat/conversations", { method: "DELETE" }),
+
   history: (pageNumber = 1, pageSize = 20) =>
     apiFetch<PaginatedList<ConversationSummaryDto>>(`/api/chat/history?pageNumber=${pageNumber}&pageSize=${pageSize}`),
 

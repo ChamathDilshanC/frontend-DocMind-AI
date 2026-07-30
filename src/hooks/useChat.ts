@@ -40,3 +40,15 @@ export function useDeleteConversation() {
     onError: (error: Error) => toast.error(error.message || "Failed to delete conversation"),
   });
 }
+
+export function useDeleteAllConversations() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => chatApi.deleteAllConversations(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["conversations"] });
+      toast.success("All conversations deleted");
+    },
+    onError: (error: Error) => toast.error(error.message || "Failed to delete conversations"),
+  });
+}
