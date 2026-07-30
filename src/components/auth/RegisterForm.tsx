@@ -110,7 +110,7 @@ export function RegisterForm() {
               <InputGroup.Prefix>
                 <Lock size={16} />
               </InputGroup.Prefix>
-              <InputGroup.Input type={showPassword ? "text" : "password"} />
+              <InputGroup.Input placeholder="password" type={showPassword ? "text" : "password"} />
               <InputGroup.Suffix className="pr-0">
                 <Button
                   isIconOnly

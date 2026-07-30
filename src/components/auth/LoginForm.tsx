@@ -49,7 +49,7 @@ export function LoginForm() {
             onBlur={field.onBlur}
             onChange={field.onChange}
           >
-            <Label>Email address</Label>
+            <Label>Email</Label>
             <InputGroup>
               <InputGroup.Prefix>
                 <Mail size={16} />
@@ -77,7 +77,7 @@ export function LoginForm() {
               <InputGroup.Prefix>
                 <Lock size={16} />
               </InputGroup.Prefix>
-              <InputGroup.Input type={showPassword ? "text" : "password"} />
+              <InputGroup.Input placeholder="••••••••" type={showPassword ? "text" : "password"} />
               <InputGroup.Suffix className="pr-0">
                 <Button
                   isIconOnly
