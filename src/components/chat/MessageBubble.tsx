@@ -1,6 +1,6 @@
 import { Sparkles } from "lucide-react";
 import { CitationList } from "@/components/chat/CitationList";
-import { StreamingCursor } from "@/components/chat/StreamingCursor";
+import { TypingAnimation } from "@/components/ui/typing-animation";
 import type { CitationDto } from "@/types/api";
 
 export interface DisplayMessage {
@@ -29,11 +29,10 @@ export function MessageBubble({ message }: { message: DisplayMessage }) {
       <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-100 text-brand-700">
         <Sparkles className="h-4 w-4" />
       </span>
-      <div className="min-w-0 max-w-[85%] rounded-2xl rounded-tl-md bg-muted px-4 py-2.5 text-sm">
-        <p className="whitespace-pre-wrap leading-relaxed">
+      <div className="min-w-0 max-w-[85%] rounded-2xl rounded-tl-md border border-border/70 bg-white px-4 py-2.5 text-sm shadow-sm">
+        <TypingAnimation as="p" typeSpeed={12} className="whitespace-pre-wrap leading-relaxed tracking-normal">
           {message.content}
-          {message.isStreaming && <StreamingCursor />}
-        </p>
+        </TypingAnimation>
         {message.citations && message.citations.length > 0 && <CitationList citations={message.citations} />}
       </div>
     </div>

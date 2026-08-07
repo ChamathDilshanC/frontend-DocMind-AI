@@ -78,7 +78,10 @@ export function ChatWindow({ conversationId }: { conversationId: string }) {
   if (pendingQuestion) {
     optimisticMessages.push({ id: "pending-question", role: "User", content: pendingQuestion });
   }
-  if (streaming) {
+  // Once the refetched conversation contains the persisted copy of the streamed
+  // answer (same message id), drop the streaming bubble — otherwise the answer
+  // renders twice until the streaming state clears.
+  if (streaming && !persistedMessages.some((m) => m.id === streaming.messageId)) {
     optimisticMessages.push({ id: streaming.messageId, role: "Assistant", content: streaming.content, isStreaming: true });
   }
 
