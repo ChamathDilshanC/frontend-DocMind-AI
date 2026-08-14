@@ -2,6 +2,7 @@
   "name": "docmind-ai-frontend",
   "version": "0.1.0",
   "private": true,
+  "author": "ChamathDilshanC",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
