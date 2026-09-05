@@ -30,22 +30,22 @@ export default function DocumentsPage() {
 
   return (
     <div className="h-full overflow-y-auto">
-      <div className="border-b bg-card px-6 py-6">
-        <h1 className="text-2xl font-semibold tracking-tight">Documents</h1>
-        <p className="mt-1 text-sm text-muted-foreground">
+      <div className="mx-auto max-w-6xl px-6 pt-10 pb-2">
+        <h1 className="font-semibold text-2xl tracking-tight">Documents</h1>
+        <p className="mt-1 text-muted-foreground text-sm">
           Upload PDF or DOCX files to make them searchable in chat.
         </p>
       </div>
 
-      <div className="grid gap-6 p-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
+      <div className="mx-auto grid max-w-6xl gap-6 p-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
         <section className="order-2 lg:order-1">
-          <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+          <h2 className="mb-3 font-medium text-muted-foreground text-xs uppercase tracking-wide">
             Your documents
           </h2>
           <DocumentList />
         </section>
 
-        <aside className="order-1 rounded-2xl border bg-card p-5 lg:order-2 lg:sticky lg:top-6">
+        <aside className="order-1 rounded-xl border bg-card p-5 lg:sticky lg:order-2 lg:top-6">
           <DocumentUploadDropzone />
         </aside>
       </div>

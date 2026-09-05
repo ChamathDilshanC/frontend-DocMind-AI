@@ -101,28 +101,21 @@ export default function DashboardPage() {
 
   return (
     <div className="h-full overflow-y-auto">
-      {/* Hero band */}
-      <div className="relative overflow-hidden bg-brand-700 px-6 py-10 text-white">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 opacity-40"
-          style={{
-            backgroundImage: "radial-gradient(#3874ff 1.5px, transparent 1.5px)",
-            backgroundSize: "22px 22px",
-          }}
-        />
-        <div className="relative flex flex-wrap items-end justify-between gap-4">
+      {/* A saturated hero band pushed the actual workspace below the fold and made the
+          brand, rather than the reader's documents, the loudest thing on the page. */}
+      <div className="mx-auto max-w-6xl px-6 pt-10 pb-2">
+        <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="text-sm text-white/70">Welcome back{user ? `, ${user.name}` : ""}</p>
-            <h1 className="mt-1 text-3xl font-semibold tracking-tight">Your document workspace</h1>
-            <p className="mt-2 max-w-lg text-sm text-white/70">
+            <p className="text-muted-foreground text-sm">Welcome back{user ? `, ${user.name}` : ""}</p>
+            <h1 className="mt-1 font-semibold text-2xl tracking-tight">Your document workspace</h1>
+            <p className="mt-2 max-w-lg text-muted-foreground text-sm leading-6">
               Upload a document, then ask questions in plain language and get answers grounded in the exact pages
               they came from.
             </p>
           </div>
-          <div className="flex gap-3">
+          <div className="flex gap-2">
             <Button
-              className="bg-white text-brand-700 hover:bg-white/90"
+              variant="outline"
               render={
                 <Link href="/documents">
                   <Upload className="mr-2 h-4 w-4" />
@@ -131,7 +124,7 @@ export default function DashboardPage() {
               }
             />
             <Button
-              className="border border-white/30 bg-white/10 text-white hover:bg-white/20"
+              className="bg-brand-700 text-white hover:bg-brand-600"
               render={
                 <Link href="/chat">
                   <Sparkles className="mr-2 h-4 w-4" />
@@ -143,7 +136,7 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <div className="space-y-6 p-6">
+      <div className="mx-auto max-w-6xl space-y-4 p-6">
         {/* Stats */}
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {documentsLoading ? (
@@ -162,21 +155,21 @@ export default function DashboardPage() {
                 value={stats.completed}
                 hint="Finished processing"
                 icon={CheckCircle2}
-                accent="bg-brand-700/10 text-brand-700"
+                accent="bg-muted text-muted-foreground"
               />
               <StatCard
                 label="In progress"
                 value={stats.inFlight}
                 hint="Queued or processing"
                 icon={Clock}
-                accent="bg-brand-500/15 text-brand-600"
+                accent="bg-muted text-muted-foreground"
               />
               <StatCard
                 label="Storage used"
                 value={formatBytes(stats.storage)}
                 hint="Across your documents"
                 icon={HardDrive}
-                accent="bg-brand-600/10 text-brand-600"
+                accent="bg-muted text-muted-foreground"
               />
             </>
           )}
@@ -192,7 +185,7 @@ export default function DashboardPage() {
           ) : (
             <>
               <div className="rounded-2xl border bg-card p-5 lg:col-span-2">
-                <h2 className="font-semibold">Uploads this week</h2>
+                <h2 className="font-semibold text-sm">Uploads this week</h2>
                 <p className="text-sm text-muted-foreground">Documents you added over the last 7 days.</p>
                 {hasUploads ? (
                   <ChartContainer config={uploadsChartConfig} className="mt-6 h-56 w-full">
@@ -214,7 +207,7 @@ export default function DashboardPage() {
               </div>
 
               <div className="rounded-2xl border bg-card p-5">
-                <h2 className="font-semibold">Processing status</h2>
+                <h2 className="font-semibold text-sm">Processing status</h2>
                 <p className="text-sm text-muted-foreground">How your documents break down.</p>
                 {statusBreakdown.length > 0 ? (
                   <>
@@ -258,7 +251,7 @@ export default function DashboardPage() {
         <div className="rounded-2xl border bg-card p-5">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="font-semibold">Recent conversations</h2>
+              <h2 className="font-semibold text-sm">Recent conversations</h2>
               <p className="text-sm text-muted-foreground">Pick up where you left off.</p>
             </div>
             <Button

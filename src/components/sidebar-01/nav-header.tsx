@@ -1,6 +1,8 @@
 "use client";
 
 import { Search } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import * as React from "react";
 import { useEffect } from "react";
@@ -46,23 +48,27 @@ export function NavHeader({ items }: NavHeaderProps) {
 
   return (
     <>
-      <SidebarHeader>
-        <div
-          className="flex cursor-pointer items-center justify-between px-2 pt-3 pb-0"
+      <SidebarHeader className="gap-1">
+        {/* The rail had no product identity at all — it opened straight onto a search
+            row, so nothing on an inner page said which app you were in. */}
+        <Link href="/dashboard" className="flex items-center gap-2 px-2 pt-2 pb-1">
+          <Image src="/logo.png" alt="" width={22} height={22} className="shrink-0" />
+          <span className="font-semibold text-sm tracking-tight">DocMind AI</span>
+        </Link>
+
+        <button
+          type="button"
+          className="mx-1 flex items-center justify-between rounded-lg border bg-background px-2.5 py-1.5 text-left transition-colors hover:bg-sidebar-accent"
           onClick={() => setOpen(true)}
         >
-          <div className="flex flex-1 items-center gap-3">
-            <Search className="h-4 w-4 text-muted-foreground" />
-            <span className="font-normal text-muted-foreground text-sm">
-              Search
-            </span>
-          </div>
-          <div className="flex items-center justify-center rounded-md border border-border px-2 py-1">
-            <kbd className="inline-flex font-[inherit] font-medium text-muted-foreground text-xs">
-              <span className="opacity-70">⌘K</span>
-            </kbd>
-          </div>
-        </div>
+          <span className="flex flex-1 items-center gap-2.5">
+            <Search className="h-3.5 w-3.5 text-muted-foreground" />
+            <span className="font-normal text-muted-foreground text-sm">Search</span>
+          </span>
+          <kbd className="inline-flex font-[inherit] font-medium text-muted-foreground/70 text-xs">
+            ⌘K
+          </kbd>
+        </button>
       </SidebarHeader>
 
       <CommandDialog onOpenChange={setOpen} open={open}>

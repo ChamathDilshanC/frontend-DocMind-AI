@@ -41,13 +41,13 @@ function SectionCard({
   children: React.ReactNode;
 }) {
   return (
-    <section className="rounded-2xl border bg-card p-6">
+    <section className="rounded-xl border bg-card p-6">
       <div className="flex items-start gap-3">
-        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand-100 text-brand-700">
+        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground">
           <Icon className="h-4 w-4" />
         </span>
         <div>
-          <h2 className="font-semibold">{title}</h2>
+          <h2 className="font-semibold text-sm">{title}</h2>
           <p className="text-sm text-muted-foreground">{description}</p>
         </div>
       </div>
@@ -90,12 +90,12 @@ export default function SettingsPage() {
 
   return (
     <div className="h-full overflow-y-auto">
-      <div className="border-b bg-card px-6 py-6">
-        <h1 className="text-2xl font-semibold tracking-tight">Settings</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Manage your profile and account security.</p>
+      <div className="mx-auto max-w-3xl px-6 pt-10 pb-2">
+        <h1 className="font-semibold text-2xl tracking-tight">Settings</h1>
+        <p className="mt-1 text-muted-foreground text-sm">Manage your profile and account security.</p>
       </div>
 
-      <div className="mx-auto max-w-3xl space-y-6 p-6">
+      <div className="mx-auto max-w-3xl space-y-4 p-6">
         {isLoading ? (
           <>
             <FormCardSkeleton fields={1} />
@@ -104,7 +104,7 @@ export default function SettingsPage() {
         ) : (
           <>
             {/* Identity summary */}
-            <div className="flex items-center gap-4 rounded-2xl border bg-card p-6">
+            <div className="flex items-center gap-4 rounded-xl border bg-card p-6">
               <UserAvatar
                 avatarUrl={profile?.avatarUrl}
                 className="h-14 w-14 shrink-0"

@@ -36,7 +36,7 @@ export function NavRecentDocuments() {
     <Collapsible className="group/collapsible" defaultOpen>
       <SidebarGroup>
         <SidebarGroupLabel
-          className="text-sm hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+          className="font-medium text-muted-foreground text-xs uppercase tracking-wide hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
           render={<CollapsibleTrigger />}
         >
           Recent Documents

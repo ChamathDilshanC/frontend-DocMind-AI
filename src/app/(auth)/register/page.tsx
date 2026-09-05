@@ -9,18 +9,18 @@ export default function RegisterPage() {
   return (
     <div>
       <div className="mb-8 flex justify-end">
-        <Typography type="body-xs" className="text-[#5b6478]">
+        <Typography type="body-xs" className="text-muted-foreground">
           Already have an account?{" "}
-          <Link href="/login" className="font-semibold text-[#2743ff] hover:underline">
+          <Link href="/login" className="font-semibold text-brand-700 hover:underline">
             Sign in
           </Link>
         </Typography>
       </div>
 
-      <Typography.Heading level={1} className={`${bricolage.className} text-2xl text-[#0d1220]`}>
+      <Typography.Heading level={1} className={`${bricolage.className} text-2xl text-foreground`}>
         Create your account
       </Typography.Heading>
-      <Typography.Paragraph className="mt-2 text-[#5b6478]">
+      <Typography.Paragraph className="mt-2 text-muted-foreground">
         Start chatting with your documents in minutes.
       </Typography.Paragraph>
 
@@ -30,7 +30,7 @@ export default function RegisterPage() {
 
       <div className="my-7 flex items-center gap-3">
         <Separator className="flex-1" />
-        <Typography type="body-xs" className="text-[#5b6478]">
+        <Typography type="body-xs" className="text-muted-foreground">
           or continue with email
         </Typography>
         <Separator className="flex-1" />
@@ -40,13 +40,13 @@ export default function RegisterPage() {
         <RegisterForm />
       </Suspense>
 
-      <Typography type="body-xs" align="center" className="mt-8 text-[#5b6478]">
+      <Typography type="body-xs" align="center" className="mt-8 text-muted-foreground">
         Already have an account?{" "}
-        <Link href="/login" className="font-semibold text-[#2743ff] hover:underline">
+        <Link href="/login" className="font-semibold text-brand-700 hover:underline">
           Sign in
         </Link>
       </Typography>
-      <Typography type="body-xs" align="center" className="mt-3 text-[#5b6478]/70">
+      <Typography type="body-xs" align="center" className="mt-3 text-muted-foreground/70">
         By signing up, you agree to our Terms of Service and Privacy Policy.
       </Typography>
     </div>

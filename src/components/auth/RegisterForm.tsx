@@ -136,6 +136,7 @@ export function RegisterForm() {
         isPending={isRegistering}
         type="submit"
         variant="primary"
+        className="bg-brand-700 text-white hover:bg-brand-600"
       >
         {isRegistering ? "Creating account..." : "Create account"}
       </Button>

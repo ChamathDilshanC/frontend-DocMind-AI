@@ -143,7 +143,7 @@ export function LandingHero() {
       <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-6 py-12 text-center -translate-y-[20%]">
         <Typography.Heading
           level={1}
-          className={`${brace.className} text-5xl md:text-6xl lg:text-7xl text-white mb-8 tracking-tight whitespace-nowrap`}
+          className={`${brace.className} mb-8 text-balance text-4xl text-white tracking-tight sm:text-5xl md:text-6xl lg:text-7xl`}
         >
           Ask your documents
         </Typography.Heading>
@@ -166,7 +166,7 @@ export function LandingHero() {
             </TextField>
           </form>
 
-          <Typography.Paragraph className="text-white px-4">
+          <Typography.Paragraph className="px-4 text-white/70">
             Upload PDF and DOCX files, ask questions in plain language, and get grounded answers with page-level
             citations — powered by retrieval-augmented generation.
           </Typography.Paragraph>

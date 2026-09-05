@@ -12,7 +12,7 @@ interface StatCardProps {
 
 export function StatCard({ label, value, hint, icon: Icon, accent }: StatCardProps) {
   return (
-    <div className="group rounded-2xl border bg-card p-5 transition-shadow hover:shadow-md">
+    <div className="group rounded-xl border bg-card p-5 transition-colors hover:border-foreground/15">
       <div className="flex items-start justify-between">
         <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{label}</p>
         <span
@@ -21,10 +21,10 @@ export function StatCard({ label, value, hint, icon: Icon, accent }: StatCardPro
             accent ?? "bg-brand-100 text-brand-700",
           )}
         >
-          <Icon className="h-4 w-4" />
+          <Icon className="h-3.5 w-3.5" />
         </span>
       </div>
-      <p className="mt-4 text-3xl font-semibold tracking-tight">{value}</p>
+      <p className="mt-4 font-semibold text-3xl tracking-tight">{value}</p>
       {hint && <p className="mt-1 text-xs text-muted-foreground">{hint}</p>}
     </div>
   );

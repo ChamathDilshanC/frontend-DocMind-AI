@@ -97,7 +97,7 @@ export function LoginForm() {
 
       <div className="flex items-center justify-between">
         <Checkbox defaultSelected name="rememberMe">
-          <Checkbox.Content className="text-xs text-[#5b6478]">
+          <Checkbox.Content className="text-xs text-muted-foreground">
             <Checkbox.Control>
               <Checkbox.Indicator />
             </Checkbox.Control>
@@ -105,7 +105,7 @@ export function LoginForm() {
           </Checkbox.Content>
         </Checkbox>
         <Link
-          className="text-xs font-medium text-[#2743ff]"
+          className="text-xs font-medium text-brand-700"
           onPress={() => toast.info("Password reset isn't available yet — contact support instead.")}
         >
           Forgot password?
@@ -120,6 +120,7 @@ export function LoginForm() {
         isPending={isLoggingIn}
         type="submit"
         variant="primary"
+        className="bg-brand-700 text-white hover:bg-brand-600"
       >
         {isRedirecting ? "Opening your dashboard..." : isLoggingIn ? "Signing in..." : "Sign in"}
       </Button>

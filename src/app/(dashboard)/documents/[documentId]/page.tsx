@@ -15,7 +15,7 @@ export default function DocumentDetailPage({ params }: { params: Promise<{ docum
   const { data: doc, isLoading } = useDocument(documentId);
 
   return (
-    <div className="h-full space-y-6 overflow-y-auto p-6">
+    <div className="mx-auto h-full max-w-4xl space-y-6 overflow-y-auto p-6">
       <Button
         variant="ghost"
         size="sm"
@@ -32,8 +32,8 @@ export default function DocumentDetailPage({ params }: { params: Promise<{ docum
         <TextContentSkeleton lines={5} />
       ) : (
         <>
-          <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-semibold">{doc.name}</h1>
+          <div className="flex items-center justify-between gap-4">
+            <h1 className="min-w-0 truncate font-semibold text-xl tracking-tight">{doc.name}</h1>
             <DocumentStatusBadge status={doc.status} />
           </div>
 
