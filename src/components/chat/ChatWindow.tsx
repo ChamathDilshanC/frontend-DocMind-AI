@@ -94,22 +94,26 @@ export function ChatWindow({ conversationId }: { conversationId: string }) {
   return (
     <div className="flex flex-1 flex-col overflow-hidden">
       {conversation && (
-        <header className="border-b bg-card px-6 py-4">
-          <h1 className="truncate font-semibold">{conversation.title}</h1>
+        <header className="shrink-0 border-b px-6 py-3">
+          {/* The title is orientation, not a page heading — it stays at body size so it
+              never competes with the answer text for attention. */}
+          <div className="mx-auto max-w-3xl">
+            <h1 className="truncate font-medium text-sm">{conversation.title}</h1>
+          </div>
         </header>
       )}
 
       <ScrollArea className="flex-1">
-        <div className="min-h-full space-y-6 p-6">
+        <div className="mx-auto min-h-full max-w-3xl space-y-8 px-6 py-8">
           {isLoading ? (
             <ChatMessagesSkeleton />
           ) : messages.length === 0 ? (
-            <div className="flex h-full flex-col items-center justify-center text-center">
-              <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-100 text-brand-700">
+            <div className="flex h-full flex-col items-center justify-center py-20 text-center">
+              <span className="flex h-11 w-11 items-center justify-center rounded-full border bg-card text-brand-700">
                 <Sparkles className="h-5 w-5" />
               </span>
-              <p className="mt-4 font-medium">Ask about your documents</p>
-              <p className="mt-1 max-w-sm text-sm text-muted-foreground">
+              <p className="mt-5 font-medium">Ask about your documents</p>
+              <p className="mt-1.5 max-w-sm text-muted-foreground text-sm leading-6">
                 Type a question below, or use <span className="font-medium text-foreground">@</span> to tag a
                 specific document first.
               </p>
@@ -121,7 +125,12 @@ export function ChatWindow({ conversationId }: { conversationId: string }) {
           <div ref={scrollRef} />
         </div>
       </ScrollArea>
-      <ChatInput onSend={handleSend} disabled={isAsking} />
+
+      <div className="shrink-0">
+        <div className="mx-auto max-w-3xl">
+          <ChatInput onSend={handleSend} disabled={isAsking} />
+        </div>
+      </div>
     </div>
   );
 }

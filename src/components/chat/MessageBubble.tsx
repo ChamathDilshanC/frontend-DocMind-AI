@@ -1,5 +1,6 @@
 import { Sparkles } from "lucide-react";
 import { CitationList } from "@/components/chat/CitationList";
+import { MarkdownMessage } from "@/components/chat/MarkdownMessage";
 import { StreamingCursor } from "@/components/chat/StreamingCursor";
 import type { CitationDto } from "@/types/api";
 
@@ -11,36 +12,35 @@ export interface DisplayMessage {
   isStreaming?: boolean;
 }
 
+/**
+ * A single conversation turn.
+ *
+ * The two roles are deliberately asymmetric. A question is short and benefits from
+ * being visually bounded, so it keeps a container and sits right. An answer is the
+ * content the reader came for — boxing it inside a bubble caps its width, fights the
+ * markdown's own spacing and makes long answers feel cramped, so it runs as plain
+ * text on the page with only the avatar to mark whose turn it is.
+ */
 export function MessageBubble({ message }: { message: DisplayMessage }) {
-  const isUser = message.role === "User";
-
-  if (isUser) {
+  if (message.role === "User") {
     return (
       <div className="flex justify-end">
-        <div className="max-w-[85%] rounded-2xl rounded-br-md bg-brand-700 px-4 py-2.5 text-sm text-white">
-          <p className="whitespace-pre-wrap leading-relaxed">{message.content}</p>
+        <div className="max-w-[75%] rounded-2xl bg-muted px-4 py-2.5 text-[0.9375rem] leading-7">
+          <p className="whitespace-pre-wrap">{message.content}</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex gap-3">
-      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-100 text-brand-700">
-        <Sparkles className="h-4 w-4" />
+    <div className="flex gap-4">
+      <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border bg-card text-brand-700">
+        <Sparkles className="h-3.5 w-3.5" />
       </span>
-      <div className="min-w-0 max-w-[85%] rounded-2xl rounded-tl-md border border-border/70 bg-white px-4 py-2.5 text-sm shadow-sm">
-        {/*
-          The answer is rendered as it arrives rather than replayed character by character.
-          Tokens already stream in over SignalR, so that *is* the typing effect — layering a
-          12ms/char animation on top meant a 1,200-character answer took ~14s to finish
-          appearing after it had fully arrived, and re-typed itself every time an old
-          conversation was opened. The cursor keeps the live feel while tokens are in flight.
-        */}
-        <p className="whitespace-pre-wrap leading-relaxed tracking-normal">
-          {message.content}
-          {message.isStreaming && <StreamingCursor />}
-        </p>
+
+      <div className="min-w-0 flex-1">
+        <MarkdownMessage content={message.content} />
+        {message.isStreaming && <StreamingCursor />}
         {message.citations && message.citations.length > 0 && <CitationList citations={message.citations} />}
       </div>
     </div>

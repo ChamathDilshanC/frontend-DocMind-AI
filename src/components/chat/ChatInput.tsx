@@ -101,7 +101,7 @@ export function ChatInput({ onSend, disabled }: ChatInputProps) {
   };
 
   return (
-    <div className="border-t bg-background p-4">
+    <div className="bg-background px-6 pt-2 pb-5">
       {taggedDocument && (
         <div className="mb-2 flex items-center gap-2">
           <span className="inline-flex items-center gap-1.5 rounded-full border bg-muted px-3 py-1 text-xs font-medium">
@@ -142,18 +142,20 @@ export function ChatInput({ onSend, disabled }: ChatInputProps) {
           </div>
         )}
 
-        <div className="flex min-h-[52px] flex-col rounded-2xl border bg-card shadow-sm">
+        {/* The whole composer reacts to focus rather than the textarea alone, so the
+            control reads as one surface instead of a box with a ring inside it. */}
+        <div className="flex min-h-[52px] flex-col rounded-3xl border bg-card shadow-sm transition-shadow focus-within:border-foreground/20 focus-within:shadow-md">
           <Textarea
             ref={textareaRef}
             value={value}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
             placeholder="Ask a question about your documents... (@ to tag one)"
-            className="min-h-11 flex-1 resize-none border-0 bg-transparent shadow-none focus-visible:ring-0"
+            className="min-h-11 flex-1 resize-none border-0 bg-transparent px-4 pt-3 text-[0.9375rem] leading-6 shadow-none focus-visible:ring-0"
             rows={1}
             disabled={disabled}
           />
-          <div className="flex items-center justify-end p-2 pt-0">
+          <div className="flex items-center justify-end p-2.5 pt-0">
             <Button
               size="icon"
               className="rounded-full"
@@ -167,8 +169,15 @@ export function ChatInput({ onSend, disabled }: ChatInputProps) {
         </div>
       </div>
 
+      {!taggedDocument && (
+        <p className="mt-2 text-center text-muted-foreground/70 text-xs">
+          Answers are grounded in your uploaded documents. Press{" "}
+          <kbd className="font-sans font-medium">Enter</kbd> to send.
+        </p>
+      )}
+
       {taggedDocument && (
-        <div className="mt-2 flex flex-wrap gap-2">
+        <div className="mt-3 flex flex-wrap gap-2">
           {QUICK_PROMPTS.map((prompt) => (
             <button
               key={prompt}

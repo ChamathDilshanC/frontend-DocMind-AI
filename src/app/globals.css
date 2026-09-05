@@ -70,10 +70,10 @@
 }
 
 :root {
-  /* HeroUI accent override: brand cobalt #2743ff, so Button/Checkbox/focus
-     rings match the brand instead of HeroUI's default blue. */
-  --accent: oklch(0.5123 0.2726 267.03);
-  --accent-foreground: oklch(1 0 0);
+  /* Note: --accent is shadcn's subtle hover fill (set further down), not a brand
+     color. A brand cobalt was once assigned here to tint HeroUI, but the shadcn
+     value below overrode it in the same block, so it never applied — anything that
+     should read as brand uses the --color-brand-* scale above instead. */
 
   /* HeroUI's --field-placeholder falls back to var(--muted), but our own
      --muted below (a near-white shadcn background fill, not a text color)
