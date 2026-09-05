@@ -2,29 +2,24 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { gooeyToast as toast } from "goey-toast";
 import { Sparkles } from "lucide-react";
 import { ChatInput } from "@/components/chat/ChatInput";
 import { MessageBubble, type DisplayMessage } from "@/components/chat/MessageBubble";
 import { TypingIndicator } from "@/components/chat/TypingIndicator";
 import { ChatMessagesSkeleton } from "@/components/ui/loading-skeletons";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useConversation } from "@/hooks/useChat";
-import { chatApi } from "@/lib/api/chat";
+import { useAskQuestion, useConversation, upsertMessage } from "@/hooks/useChat";
 import { getHubConnection } from "@/lib/signalr/connection";
-
-interface StreamingState {
-  messageId: string;
-  content: string;
-}
 
 export function ChatWindow({ conversationId }: { conversationId: string }) {
   const queryClient = useQueryClient();
   const { data: conversation, isLoading } = useConversation(conversationId);
+  const ask = useAskQuestion(conversationId);
 
-  const [pendingQuestion, setPendingQuestion] = useState<string | null>(null);
-  const [streaming, setStreaming] = useState<StreamingState | null>(null);
-  const [isAsking, setIsAsking] = useState(false);
+  // Only identifies which message the cursor belongs to; the text itself lives in
+  // the query cache like every other message. Re-setting it to the same id on every
+  // token is a no-op, so this re-renders once when streaming starts, not per token.
+  const [streamingMessageId, setStreamingMessageId] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -32,10 +27,13 @@ export function ChatWindow({ conversationId }: { conversationId: string }) {
 
     const onToken = (payload: { conversationId: string; messageId: string; token: string }) => {
       if (payload.conversationId !== conversationId) return;
-      setStreaming((prev) =>
-        prev && prev.messageId === payload.messageId
-          ? { ...prev, content: prev.content + payload.token }
-          : { messageId: payload.messageId, content: payload.token },
+
+      setStreamingMessageId(payload.messageId);
+      upsertMessage(
+        queryClient,
+        conversationId,
+        { id: payload.messageId, role: "Assistant", content: payload.token },
+        { appendContent: true },
       );
     };
 
@@ -43,53 +41,31 @@ export function ChatWindow({ conversationId }: { conversationId: string }) {
     return () => {
       hub.off("ReceiveAnswerToken", onToken);
     };
-  }, [conversationId]);
+  }, [conversationId, queryClient]);
 
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [conversation, streaming, pendingQuestion]);
+  }, [conversation]);
 
-  const handleSend = async (question: string, documentId?: string) => {
-    setPendingQuestion(question);
-    setStreaming(null);
-    setIsAsking(true);
-
-    try {
-      await chatApi.ask(question, conversationId, documentId);
-      await queryClient.invalidateQueries({ queryKey: ["conversations", conversationId] });
-      await queryClient.invalidateQueries({ queryKey: ["conversations"] });
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to get an answer");
-    } finally {
-      setPendingQuestion(null);
-      setStreaming(null);
-      setIsAsking(false);
-    }
+  // Failures surface through the mutation's own onError, and both the cursor and the
+  // indicator are gated on isPending — so a leftover id after a turn cannot render
+  // anything, and the next send clears it.
+  const handleSend = (question: string, documentId?: string) => {
+    setStreamingMessageId(null);
+    ask.mutate({ question, documentId });
   };
 
-  const persistedMessages: DisplayMessage[] = (conversation?.messages ?? []).map((m) => ({
+  const messages: DisplayMessage[] = (conversation?.messages ?? []).map((m) => ({
     id: m.id,
     role: m.role,
     content: m.content,
     citations: m.citations,
+    isStreaming: ask.isPending && m.id === streamingMessageId,
   }));
 
-  const optimisticMessages: DisplayMessage[] = [];
-  if (pendingQuestion) {
-    optimisticMessages.push({ id: "pending-question", role: "User", content: pendingQuestion });
-  }
-  // Once the refetched conversation contains the persisted copy of the streamed
-  // answer (same message id), drop the streaming bubble — otherwise the answer
-  // renders twice until the streaming state clears.
-  if (streaming && !persistedMessages.some((m) => m.id === streaming.messageId)) {
-    optimisticMessages.push({ id: streaming.messageId, role: "Assistant", content: streaming.content, isStreaming: true });
-  }
-
-  const messages = [...persistedMessages, ...optimisticMessages];
-  // Between sending and the first streamed token there is nothing to render as
-  // a message yet, so show the animated indicator instead of a placeholder
-  // bubble containing the literal word "Thinking...".
-  const showTypingIndicator = isAsking && !streaming;
+  // Between sending and the first streamed token there is nothing to render as a
+  // message yet, so show the animated indicator instead of an empty bubble.
+  const showTypingIndicator = ask.isPending && streamingMessageId === null;
 
   return (
     <div className="flex flex-1 flex-col overflow-hidden">
@@ -128,7 +104,7 @@ export function ChatWindow({ conversationId }: { conversationId: string }) {
 
       <div className="shrink-0">
         <div className="mx-auto max-w-3xl">
-          <ChatInput onSend={handleSend} disabled={isAsking} />
+          <ChatInput onSend={handleSend} disabled={ask.isPending} />
         </div>
       </div>
     </div>
