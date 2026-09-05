@@ -1,6 +1,6 @@
 import { Sparkles } from "lucide-react";
 import { CitationList } from "@/components/chat/CitationList";
-import { TypingAnimation } from "@/components/ui/typing-animation";
+import { StreamingCursor } from "@/components/chat/StreamingCursor";
 import type { CitationDto } from "@/types/api";
 
 export interface DisplayMessage {
@@ -30,9 +30,17 @@ export function MessageBubble({ message }: { message: DisplayMessage }) {
         <Sparkles className="h-4 w-4" />
       </span>
       <div className="min-w-0 max-w-[85%] rounded-2xl rounded-tl-md border border-border/70 bg-white px-4 py-2.5 text-sm shadow-sm">
-        <TypingAnimation as="p" typeSpeed={12} className="whitespace-pre-wrap leading-relaxed tracking-normal">
+        {/*
+          The answer is rendered as it arrives rather than replayed character by character.
+          Tokens already stream in over SignalR, so that *is* the typing effect — layering a
+          12ms/char animation on top meant a 1,200-character answer took ~14s to finish
+          appearing after it had fully arrived, and re-typed itself every time an old
+          conversation was opened. The cursor keeps the live feel while tokens are in flight.
+        */}
+        <p className="whitespace-pre-wrap leading-relaxed tracking-normal">
           {message.content}
-        </TypingAnimation>
+          {message.isStreaming && <StreamingCursor />}
+        </p>
         {message.citations && message.citations.length > 0 && <CitationList citations={message.citations} />}
       </div>
     </div>
