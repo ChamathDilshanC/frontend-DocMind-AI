@@ -1,4 +1,11 @@
-import { Sparkles } from "lucide-react";
+import { Sparkles, UserRound } from "lucide-react";
+import {
+  Message as BeMessage,
+  MessageAvatar,
+  MessageBubble as BeMessageBubble,
+  MessageBubbleContent,
+  MessageContent,
+} from "@/components/agents/message";
 import { CitationList } from "@/components/chat/CitationList";
 import { MarkdownMessage } from "@/components/chat/MarkdownMessage";
 import { StreamingCursor } from "@/components/chat/StreamingCursor";
@@ -24,25 +31,37 @@ export interface DisplayMessage {
 export function MessageBubble({ message }: { message: DisplayMessage }) {
   if (message.role === "User") {
     return (
-      <div className="flex justify-end">
-        <div className="max-w-[75%] rounded-2xl bg-muted px-4 py-2.5 text-[0.9375rem] leading-7">
-          <p className="whitespace-pre-wrap">{message.content}</p>
-        </div>
-      </div>
+      <BeMessage from="user" animateIn>
+        <MessageAvatar className="bg-foreground text-background">
+          <UserRound />
+        </MessageAvatar>
+        <MessageContent>
+          <BeMessageBubble variant="soft" animateIn>
+            <MessageBubbleContent>
+              <p className="whitespace-pre-wrap">{message.content}</p>
+            </MessageBubbleContent>
+          </BeMessageBubble>
+        </MessageContent>
+      </BeMessage>
     );
   }
 
   return (
-    <div className="flex gap-4">
-      <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border bg-card text-brand-700">
-        <Sparkles className="h-3.5 w-3.5" />
-      </span>
-
-      <div className="min-w-0 flex-1">
-        <MarkdownMessage content={message.content} />
-        {message.isStreaming && <StreamingCursor />}
-        {message.citations && message.citations.length > 0 && <CitationList citations={message.citations} />}
-      </div>
-    </div>
+    <BeMessage from="assistant" animateIn>
+      <MessageAvatar className="border bg-card text-brand-700">
+        <Sparkles />
+      </MessageAvatar>
+      <MessageContent>
+        <BeMessageBubble variant="ghost" className="max-w-none">
+          <MessageBubbleContent className="max-w-none px-0 py-0">
+            <MarkdownMessage content={message.content} />
+            {message.isStreaming && <StreamingCursor />}
+            {message.citations && message.citations.length > 0 && (
+              <CitationList citations={message.citations} />
+            )}
+          </MessageBubbleContent>
+        </BeMessageBubble>
+      </MessageContent>
+    </BeMessage>
   );
 }

@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { Sparkles } from "lucide-react";
+import { MessageScroller } from "@/components/agents/message";
 import { ChatInput } from "@/components/chat/ChatInput";
 import { MessageBubble, type DisplayMessage } from "@/components/chat/MessageBubble";
 import { TypingIndicator } from "@/components/chat/TypingIndicator";
 import { ChatMessagesSkeleton } from "@/components/ui/loading-skeletons";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { useAskQuestion, useConversation, upsertMessage } from "@/hooks/useChat";
 import { getHubConnection } from "@/lib/signalr/connection";
 
@@ -20,7 +20,6 @@ export function ChatWindow({ conversationId }: { conversationId: string }) {
   // the query cache like every other message. Re-setting it to the same id on every
   // token is a no-op, so this re-renders once when streaming starts, not per token.
   const [streamingMessageId, setStreamingMessageId] = useState<string | null>(null);
-  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const hub = getHubConnection();
@@ -42,10 +41,6 @@ export function ChatWindow({ conversationId }: { conversationId: string }) {
       hub.off("ReceiveAnswerToken", onToken);
     };
   }, [conversationId, queryClient]);
-
-  useEffect(() => {
-    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [conversation]);
 
   // Failures surface through the mutation's own onError, and both the cursor and the
   // indicator are gated on isPending — so a leftover id after a turn cannot render
@@ -79,8 +74,15 @@ export function ChatWindow({ conversationId }: { conversationId: string }) {
         </header>
       )}
 
-      <ScrollArea className="flex-1">
-        <div className="mx-auto min-h-full max-w-3xl space-y-8 px-6 py-8">
+      <MessageScroller
+        className="flex-1"
+        viewportClassName="px-6"
+        contentClassName="mx-auto flex min-h-full max-w-3xl flex-col gap-8 py-8"
+        followOutput
+        smooth
+        busy={ask.isPending}
+        label="Chat conversation"
+      >
           {isLoading ? (
             <ChatMessagesSkeleton />
           ) : messages.length === 0 ? (
@@ -98,9 +100,7 @@ export function ChatWindow({ conversationId }: { conversationId: string }) {
             messages.map((message) => <MessageBubble key={message.id} message={message} />)
           )}
           {showTypingIndicator && <TypingIndicator />}
-          <div ref={scrollRef} />
-        </div>
-      </ScrollArea>
+      </MessageScroller>
 
       <div className="shrink-0">
         <div className="mx-auto max-w-3xl">
